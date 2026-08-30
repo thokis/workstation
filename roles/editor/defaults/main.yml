@@ -1,0 +1,8 @@
+---
+editor_nvim_bin: /usr/local/bin/nvim
+
+editor_required_bins:
+  - nvim
+
+editor_default_apps:
+  - {mime: text/plain, app: nvim.desktop}

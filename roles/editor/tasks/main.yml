@@ -1,0 +1,18 @@
+---
+- name: Ensure nvim is installed
+  ansible.builtin.command: "command -v {{ item }}"
+  changed_when: false
+  loop: "{{ editor_required_bins }}"
+
+# nvim.desktop is Terminal=true, so opening a text file is hosted by whatever the
+# terminal role's xdg-terminal-exec keystone resolves (ghostty). Run terminal too.
+- name: Set default text editor in mimeapps.list
+  community.general.ini_file:
+    path: "{{ ansible_env.HOME }}/.config/mimeapps.list"
+    section: Default Applications
+    option: "{{ item.mime }}"
+    value: "{{ item.app }}"
+    no_extra_spaces: true
+    create: true
+    mode: "0644"
+  loop: "{{ editor_default_apps }}"

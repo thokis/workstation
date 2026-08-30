@@ -1,0 +1,11 @@
+---
+- name: Configure personal workstation
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - role: terminal   # ghostty for everything (editor's text-file open depends on this)
+      tags: terminal
+    - role: editor     # nvim as text editor/viewer
+      tags: editor
+    # - role: <next>
+    #   tags: <next>
