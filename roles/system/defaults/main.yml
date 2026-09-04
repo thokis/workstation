@@ -1,0 +1,13 @@
+---
+# Display manager to stop (the dwm session starts via startx from a tty login).
+system_display_manager: gdm.service
+
+# Default systemd target. multi-user is text-console only, so the display
+# manager (only wanted by graphical.target) never starts on boot.
+system_boot_target: multi-user.target
+
+# Kernel cmdline tokens to strip from GRUB_CMDLINE_LINUX_DEFAULT for a plain
+# text boot (no vendor splash, kernel messages visible).
+system_grub_remove_params:
+    - quiet
+    - splash

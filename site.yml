@@ -3,23 +3,23 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - role: terminal   # ghostty for everything (editor's text-file open depends on this)
-      tags: terminal
-    - role: editor     # nvim as text editor/viewer
-      tags: editor
-    - role: boot       # plain text console, no display manager (startx + dwm)
-      tags: [boot, wm]
-    - role: dwm        # tiling window manager (personal fork)
-      tags: [dwm, wm]
-    - role: st         # terminal (personal fork)
-      tags: [st, wm]
-    - role: dmenu      # launcher (personal fork)
-      tags: [dmenu, wm]
-    - role: slstatus   # status bar (personal fork)
-      tags: [slstatus, wm]
-    - role: xsecurelock  # screen locker (personal fork)
-      tags: [xsecurelock, wm]
-    - role: desktop    # X session glue: .xinitrc, dotfiles, scripts, fonts
-      tags: [desktop, wm]
-    # - role: <next>
-    #   tags: <next>
+      # - role: terminal   # ghostty for everything (editor's text-file open depends on this)
+      #   tags: terminal
+      - role: editor # nvim as text editor/viewer
+        tags: editor
+      - role: system # plain text console, no display manager (startx + dwm)
+        tags: [system, wm]
+      - role: dwm # tiling window manager (personal fork)
+        tags: [dwm, wm]
+      - role: st # terminal (personal fork)
+        tags: [st, wm]
+      - role: dmenu # launcher (personal fork)
+        tags: [dmenu, wm]
+      - role: slstatus # status bar (personal fork)
+        tags: [slstatus, wm]
+      - role: xsecurelock # screen locker (personal fork)
+        tags: [xsecurelock, wm]
+      - role: desktop # X session glue: .xinitrc, dotfiles, scripts, fonts
+        tags: [desktop, wm]
+      # - role: <next>
+      #   tags: <next>

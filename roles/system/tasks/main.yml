@@ -1,0 +1,28 @@
+---
+- name: Gather service facts
+  ansible.builtin.service_facts:
+
+- name: Stop the display manager
+  ansible.builtin.systemd_service:
+      name: "{{ system_display_manager }}"
+      state: stopped
+  become: true
+  when: system_display_manager in ansible_facts.services
+
+# What `systemctl set-default {{ system_boot_target }}` does, as an idempotent
+# symlink: boot to a text console so the display manager never starts.
+- name: Boot to the multi-user target (no display manager on future boots)
+  ansible.builtin.file:
+      src: "/usr/lib/systemd/system/{{ system_boot_target }}"
+      dest: /etc/systemd/system/default.target
+      state: link
+  become: true
+
+- name: Enable verbose console boot
+  ansible.builtin.replace:
+      path: /etc/default/grub
+      regexp: '(^GRUB_CMDLINE_LINUX_DEFAULT="[^"]*?)\s*\b{{ item }}\b'
+      replace: '\g<1>'
+  loop: "{{ system_grub_remove_params }}"
+  become: true
+  notify: Update grub
