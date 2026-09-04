@@ -53,6 +53,7 @@
     repo: "{{ editor_config_repo }}"
     dest: "{{ editor_config_dir }}"
     version: "{{ editor_config_version }}"
+    force: true   # fork is source of truth; discard local drift (e.g. lazy-lock)
 
 # nvim.desktop is Terminal=true, so opening a text file is hosted by whatever the
 # terminal role's xdg-terminal-exec keystone resolves (ghostty).
