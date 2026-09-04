@@ -1,0 +1,22 @@
+[project]
+name = "workstation"
+version = "0"
+description = "Personal Ubuntu/GNOME workstation as an Ansible playbook"
+requires-python = ">=3.11"
+# Runtime deps for the control node: ansible itself and hvac (for the
+# community.hashi_vault OpenBao lookup in the secrets role).
+dependencies = [
+    "ansible>=10",
+    "hvac>=2",
+]
+
+[dependency-groups]
+dev = [
+    "ansible-lint>=24",
+    "yamllint>=1.35",
+]
+
+# Not a Python package — just an environment. uv manages the venv + uv.lock
+# without trying to build/install this repo.
+[tool.uv]
+package = false

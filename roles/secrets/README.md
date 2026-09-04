@@ -13,10 +13,11 @@ helios9 and exports the vars into your shell (never written to disk); then run
 `ansible-playbook site.yml` yourself. The lookup runs on the **controller**; the
 key is written onto the target. Every secret-touching task is `no_log: true`.
 
-Controller prerequisites: `community.hashi_vault` collection (in
-`requirements.yml`) and the `hvac` Python library (`uv pip install hvac` in the
-project venv). SSH access to helios9 is only needed by the bootstrap script (to
-mint the secret_id), not by the playbook run itself.
+Controller prerequisites: the `community.hashi_vault` collection (in
+`requirements.yml`) and the `hvac` Python library — declared in `pyproject.toml`,
+so `uv sync` installs both into the project venv. Run the playbook inside it
+(`uv run ansible-playbook ...` or activate `.venv`). SSH to helios9 is only used
+by `scripts/load-creds.sh` to mint the secret_id, not by the playbook run.
 
 Vars: `secrets_kv_mount`, `secrets_ssh_key_path`, `secrets_ssh_key_field`,
 `secrets_ssh_key_dest`.
