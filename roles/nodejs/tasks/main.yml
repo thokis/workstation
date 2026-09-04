@@ -1,0 +1,31 @@
+---
+- name: Clone nvm
+  ansible.builtin.git:
+      repo: https://github.com/nvm-sh/nvm.git
+      dest: "{{ nodejs_nvm_dir }}"
+      version: "{{ nodejs_nvm_version }}"
+
+- name: Source nvm from ~/.bashrc
+  ansible.builtin.blockinfile:
+      path: "{{ ansible_env.HOME }}/.bashrc"
+      marker: "# {mark} ANSIBLE MANAGED nvm"
+      create: true
+      mode: "0644"
+      block: |
+          export NVM_DIR="{{ nodejs_nvm_dir }}"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+- name: Check whether the requested Node.js is installed
+  ansible.builtin.command:
+      cmd: bash -c 'source "{{ nodejs_nvm_dir }}/nvm.sh" >/dev/null 2>&1 && nvm which "{{ nodejs_version }}"'
+  register: nodejs_which
+  changed_when: false
+  failed_when: false
+
+- name: Install Node.js via nvm
+  ansible.builtin.shell:
+      cmd: source "{{ nodejs_nvm_dir }}/nvm.sh" && nvm install "{{ nodejs_version }}" && nvm alias default "{{ nodejs_version }}"
+      executable: /bin/bash
+  when: nodejs_which.rc != 0
+  changed_when: true

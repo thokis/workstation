@@ -5,7 +5,9 @@
   roles:
       # - role: terminal   # ghostty for everything (editor's text-file open depends on this)
       #   tags: terminal
-      - role: editor # nvim as text editor/viewer
+      - role: nodejs # Node.js via nvm (Neovim/Mason tooling; editor depends on it)
+        tags: [nodejs, editor]
+      - role: editor # neovim from source + personal config
         tags: editor
       - role: system # plain text console, no display manager (startx + dwm)
         tags: [system, wm]
