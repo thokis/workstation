@@ -17,6 +17,8 @@
       tags: [pyenv]
     - role: editor # neovim from source + personal config
       tags: editor
+    - role: xorg # X server + xinit (modesetting; AMD/Intel auto)
+      tags: [xorg, wm]
     - role: dwm # tiling window manager (personal fork)
       tags: [dwm, wm]
     - role: st # terminal (personal fork)
