@@ -4,3 +4,9 @@
       cmd: update-grub
   become: true
   changed_when: true
+
+- name: Update initramfs
+  ansible.builtin.command:
+      cmd: update-initramfs -u
+  become: true
+  changed_when: true

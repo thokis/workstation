@@ -31,6 +31,17 @@
       regexp: '^XKBLAYOUT='
       line: 'XKBLAYOUT="{{ keyboard_layout }}"'
   become: true
+  notify: Update initramfs
+
+# Bake the console keymap into the initramfs so the LUKS passphrase prompt in
+# early boot uses keyboard_layout too (not the layout from install time).
+- name: Include the console keymap in the initramfs
+  ansible.builtin.lineinfile:
+      path: /etc/initramfs-tools/initramfs.conf
+      regexp: '^KEYMAP='
+      line: KEYMAP=y
+  become: true
+  notify: Update initramfs
 
 - name: Enable verbose console boot
   ansible.builtin.replace:
