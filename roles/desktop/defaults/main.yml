@@ -21,6 +21,7 @@ desktop_packages:
   - feh                  # wallpaper
   - picom                # compositor
   - network-manager-gnome  # nm-applet
+  - libpam-gnome-keyring   # unlock keyring (ssh keys, NM/wifi secrets) at tty login
   - xss-lock             # lock on suspend / lock-session
   - xprintidle           # idle-manager
   - brightnessctl        # idle-manager backlight
