@@ -12,11 +12,12 @@ Deploys:
   `~/.icons/default/index.theme` (Adwaita cursor).
 - `/etc/X11/xorg.conf.d/40-libinput-touchpad.conf` (tap-to-click, natural
   scroll).
-- Helper scripts to `~/.local/bin`: `cputemp`, `lockscreen`, `idle-manager`,
-  `netstatus`, `google-chrome` (scales Chrome to 0.9), `screenshot`.
-- `saver_blur`: compiled from `files/xsecurelock_saver_blur.c` (the blurred
-  lock-screen saver; needs Imlib2). Rebuilds when its source changes.
+- Helper scripts to `~/.local/bin`: `lockscreen`, `idle-manager`, `netstatus`,
+  `google-chrome` (scales Chrome to 0.9), `screenshot`.
 - CaskaydiaCove Nerd Font (`desktop_font_version`).
+
+The blurred lock-screen saver `lockscreen` invokes is built by the separate
+`saver_blur` role (from its own repo), not here.
 
 Note: several scripts are tuned to a Framework 13 AMD (`k10temp`, `amdgpu_bl1`,
 `ACAD`, `wlp1s0`, `BAT1`) — adjust for other hardware.

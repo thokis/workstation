@@ -1,0 +1,10 @@
+---
+saver_blur_repo: git@github.com:thokis/xsecurelock-saver-blur.git
+saver_blur_version: master
+saver_blur_src: "{{ ansible_env.HOME }}/.development/c/xsecurelock-saver-blur"
+saver_blur_bin: "{{ ansible_env.HOME }}/.local/bin/saver_blur"
+
+saver_blur_build_packages:
+  - build-essential
+  - libx11-dev
+  - libimlib2-dev

@@ -5,14 +5,11 @@
       state: present
   become: true
 
-- name: Ensure local bin and src directories exist
+- name: Ensure the local bin directory exists
   ansible.builtin.file:
-      path: "{{ item }}"
+      path: "{{ desktop_local_bin }}"
       state: directory
       mode: "0755"
-  loop:
-      - "{{ desktop_local_bin }}"
-      - "{{ desktop_local_src }}"
 
 - name: Deploy helper scripts
   ansible.builtin.copy:
@@ -20,27 +17,6 @@
       dest: "{{ desktop_local_bin }}/{{ item }}"
       mode: "0755"
   loop: "{{ desktop_scripts }}"
-
-- name: Deploy the xsecurelock blur saver source
-  ansible.builtin.copy:
-      src: xsecurelock_saver_blur.c
-      dest: "{{ desktop_local_src }}/xsecurelock_saver_blur.c"
-      mode: "0644"
-  register: desktop_saver_src
-
-- name: Check whether the blur saver is built
-  ansible.builtin.stat:
-      path: "{{ desktop_local_bin }}/saver_blur"
-  register: desktop_saver_bin
-
-- name: Compile the xsecurelock blur saver
-  ansible.builtin.shell:
-      cmd: >-
-          cc -O2 -o "{{ desktop_local_bin }}/saver_blur"
-          "{{ desktop_local_src }}/xsecurelock_saver_blur.c"
-          $(pkg-config --cflags --libs imlib2) -lX11
-  when: desktop_saver_src.changed or not desktop_saver_bin.stat.exists
-  changed_when: true
 
 - name: Deploy X resources
   ansible.builtin.copy:
@@ -112,7 +88,7 @@
       path: /etc/pam.d/login
       regexp: '^auth\s+optional\s+pam_gnome_keyring\.so\s*$'
       line: "auth       optional   pam_gnome_keyring.so"
-      insertafter: '^@include common-auth'
+      insertafter: "^@include common-auth"
   become: true
 
 - name: Start the gnome-keyring for the tty session (session)
@@ -120,5 +96,5 @@
       path: /etc/pam.d/login
       regexp: '^session\s+optional\s+pam_gnome_keyring\.so\s+auto_start\s*$'
       line: "session    optional   pam_gnome_keyring.so auto_start"
-      insertafter: '^@include common-session'
+      insertafter: "^@include common-session"
   become: true

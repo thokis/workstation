@@ -1,9 +1,0 @@
-#!/bin/sh
-# Print CPU (k10temp Tctl) temperature in whole °C, resolving hwmonN by name
-# so it survives reboots (the hwmonN index is not stable).
-for h in /sys/class/hwmon/hwmon*; do
-	[ "$(cat "$h/name" 2>/dev/null)" = k10temp ] || continue
-	awk '{printf "%d", ($1 + 500) / 1000}' "$h/temp1_input"
-	exit 0
-done
-printf 'n/a'
