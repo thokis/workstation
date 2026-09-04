@@ -5,6 +5,8 @@
   roles:
       - role: system # bootstrap first: base packages (git, …), console boot. Run from a tty/SSH, not the GUI.
         tags: [system, wm, bootstrap]
+      - role: uv # uv Python tool manager
+        tags: [uv, bootstrap]
       - role: secrets # install the GitHub SSH key from OpenBao before any clone
         tags: [secrets, bootstrap]
       # - role: terminal   # ghostty for everything (editor's text-file open depends on this)
