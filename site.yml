@@ -7,6 +7,8 @@
       tags: terminal
     - role: editor     # nvim as text editor/viewer
       tags: editor
+    - role: boot       # plain text console, no display manager (startx + dwm)
+      tags: [boot, wm]
     - role: dwm        # tiling window manager (personal fork)
       tags: [dwm, wm]
     - role: st         # terminal (personal fork)

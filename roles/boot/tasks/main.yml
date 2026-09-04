@@ -1,0 +1,19 @@
+---
+- name: Gather service facts
+  ansible.builtin.service_facts:
+
+- name: Stop the display manager
+  ansible.builtin.systemd_service:
+    name: "{{ boot_display_manager }}"
+    state: stopped
+  become: true
+  when: boot_display_manager in ansible_facts.services
+
+- name: Strip splash tokens from the default kernel cmdline
+  ansible.builtin.replace:
+    path: /etc/default/grub
+    regexp: '(^GRUB_CMDLINE_LINUX_DEFAULT="[^"]*?)\s*\b{{ item }}\b'
+    replace: '\g<1>'
+  loop: "{{ boot_grub_remove_params }}"
+  become: true
+  notify: Update grub
