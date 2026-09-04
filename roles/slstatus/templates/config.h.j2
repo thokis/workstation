@@ -14,7 +14,7 @@ static const struct arg args[] = {
 	/* function        format               argument */
 	{ run_command, " %s |", "netstatus" },
 {% if slstatus_battery %}
-	{ battery_perc, "   %s%% |", "{{ slstatus_battery }}" },
+	{ battery_perc, "   %s%% |", "{{ slstatus_battery }}" },
 {% endif %}
 	{ datetime, " %s ", "%a %d %b %H:%M" },
 };
