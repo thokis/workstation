@@ -4,6 +4,7 @@
       repo: https://github.com/nvm-sh/nvm.git
       dest: "{{ nodejs_nvm_dir }}"
       version: "{{ nodejs_nvm_version }}"
+      recursive: false   # nvm's only submodule is a test fixture cloned via ssh; skip it
 
 - name: Source nvm from ~/.bashrc
   ansible.builtin.blockinfile:
