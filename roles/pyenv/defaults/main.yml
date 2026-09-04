@@ -1,0 +1,20 @@
+---
+pyenv_repo: https://github.com/pyenv/pyenv.git
+pyenv_dir: "{{ ansible_env.HOME }}/.pyenv"
+pyenv_virtualenv_repo: https://github.com/pyenv/pyenv-virtualenv.git
+
+# Build deps for compiling CPython via pyenv (pyenv wiki's suggested set).
+pyenv_build_packages:
+  - build-essential
+  - libssl-dev
+  - zlib1g-dev
+  - libbz2-dev
+  - libreadline-dev
+  - libsqlite3-dev
+  - libncursesw5-dev
+  - xz-utils
+  - tk-dev
+  - libxml2-dev
+  - libxmlsec1-dev
+  - libffi-dev
+  - liblzma-dev

@@ -1,0 +1,22 @@
+---
+- name: Install pyenv build dependencies
+  ansible.builtin.apt:
+    name: "{{ pyenv_build_packages }}"
+    state: present
+  become: true
+
+- name: Clone pyenv
+  ansible.builtin.git:
+    repo: "{{ pyenv_repo }}"
+    dest: "{{ pyenv_dir }}"
+    version: master
+    recursive: false
+    update: false
+
+- name: Clone the pyenv-virtualenv plugin
+  ansible.builtin.git:
+    repo: "{{ pyenv_virtualenv_repo }}"
+    dest: "{{ pyenv_dir }}/plugins/pyenv-virtualenv"
+    version: master
+    recursive: false
+    update: false

@@ -13,6 +13,8 @@
     #   tags: terminal
     - role: nodejs # Node.js via nvm (Neovim/Mason tooling; editor depends on it)
       tags: [nodejs, editor]
+    - role: pyenv # pyenv + pyenv-virtualenv (Python version manager)
+      tags: [pyenv]
     - role: editor # neovim from source + personal config
       tags: editor
     - role: dwm # tiling window manager (personal fork)
