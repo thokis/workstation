@@ -1,7 +1,7 @@
 #!/bin/sh
 # Lock the screen with xsecurelock, showing a blurred snapshot of the current
 # screen as the background. Capture happens here, BEFORE xsecurelock covers the
-# screen; saver_blur then renders the result inside the lock window.
+# screen; xsecurelock-blur then renders the result inside the lock window.
 # Used both by the dwm keybind and by xss-lock (suspend / lock-session).
 set -eu
 
@@ -28,6 +28,6 @@ if scrot -o -z "$shot" 2>/dev/null; then
 	[ -f "$bg" ] && chmod 600 "$bg" 2>/dev/null || true
 fi
 
-export XSECURELOCK_SAVER="$HOME/.local/bin/saver_blur"
+export XSECURELOCK_SAVER="$HOME/.local/bin/xsecurelock-blur"
 export XSECURELOCK_BG_IMAGE="$bg"
 exec xsecurelock

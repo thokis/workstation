@@ -2,7 +2,7 @@
 xsecurelock_blur_repo: git@github.com:thokis/xsecurelock-blur.git
 xsecurelock_blur_version: master
 xsecurelock_blur_src: "{{ ansible_env.HOME }}/.sources/xsecurelock-blur"
-xsecurelock_blur_bin: "{{ ansible_env.HOME }}/.local/bin/saver_blur"
+xsecurelock_blur_bin: "{{ ansible_env.HOME }}/.local/bin/xsecurelock-blur"
 
 xsecurelock_blur_build_packages:
   - build-essential
