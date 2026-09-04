@@ -1,0 +1,37 @@
+---
+desktop_local_bin: "{{ ansible_env.HOME }}/.local/bin"
+desktop_local_src: "{{ ansible_env.HOME }}/.local/src"
+
+# Wallpaper feh restores in .xinitrc (provide the image yourself).
+desktop_wallpaper: "{{ ansible_env.HOME }}/Pictures/wallhaven-5y3pd8.png"
+
+# CaskaydiaCove Nerd Font (st/dwm/dmenu primary font).
+desktop_font_version: v3.2.1
+desktop_font_url: "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ desktop_font_version }}/CascadiaCode.zip"
+desktop_font_dir: "{{ ansible_env.HOME }}/.local/share/fonts/CascadiaCode"
+
+# Runtime tools the session and its scripts call.
+desktop_packages:
+  - build-essential      # compile the saver_blur helper
+  - libx11-dev           # saver_blur
+  - libimlib2-dev        # saver_blur (Imlib2 rendering)
+  - unzip                # extract the font archive
+  - scrot                # screenshot + lockscreen snapshot
+  - imagemagick          # lockscreen blur (convert)
+  - feh                  # wallpaper
+  - picom                # compositor
+  - network-manager-gnome  # nm-applet
+  - xss-lock             # lock on suspend / lock-session
+  - xprintidle           # idle-manager
+  - brightnessctl        # idle-manager backlight
+  - iw                   # netstatus wifi essid
+  - x11-xserver-utils    # xrdb, xsetroot
+
+# Personal helper scripts deployed to ~/.local/bin (mode 0755).
+desktop_scripts:
+  - cputemp
+  - lockscreen
+  - idle-manager
+  - netstatus
+  - google-chrome
+  - screenshot

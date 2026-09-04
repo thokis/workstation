@@ -1,0 +1,104 @@
+---
+- name: Install session packages
+  ansible.builtin.apt:
+    name: "{{ desktop_packages }}"
+    state: present
+  become: true
+
+- name: Ensure local bin and src directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ desktop_local_bin }}"
+    - "{{ desktop_local_src }}"
+
+- name: Deploy helper scripts
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ desktop_local_bin }}/{{ item }}"
+    mode: "0755"
+  loop: "{{ desktop_scripts }}"
+
+- name: Deploy the xsecurelock blur saver source
+  ansible.builtin.copy:
+    src: xsecurelock_saver_blur.c
+    dest: "{{ desktop_local_src }}/xsecurelock_saver_blur.c"
+    mode: "0644"
+  register: desktop_saver_src
+
+- name: Check whether the blur saver is built
+  ansible.builtin.stat:
+    path: "{{ desktop_local_bin }}/saver_blur"
+  register: desktop_saver_bin
+
+- name: Compile the xsecurelock blur saver
+  ansible.builtin.shell:
+    cmd: >-
+      cc -O2 -o "{{ desktop_local_bin }}/saver_blur"
+      "{{ desktop_local_src }}/xsecurelock_saver_blur.c"
+      $(pkg-config --cflags --libs imlib2) -lX11
+  when: desktop_saver_src.changed or not desktop_saver_bin.stat.exists
+  changed_when: true
+
+- name: Deploy X resources
+  ansible.builtin.copy:
+    src: Xresources
+    dest: "{{ ansible_env.HOME }}/.Xresources"
+    mode: "0644"
+
+- name: Deploy the .xinitrc
+  ansible.builtin.template:
+    src: xinitrc.j2
+    dest: "{{ ansible_env.HOME }}/.xinitrc"
+    mode: "0755"
+
+- name: Ensure config subdirectories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ ansible_env.HOME }}/.config"
+    - "{{ ansible_env.HOME }}/.config/xdg-desktop-portal"
+    - "{{ ansible_env.HOME }}/.icons/default"
+
+- name: Deploy the picom configuration
+  ansible.builtin.copy:
+    src: picom.conf
+    dest: "{{ ansible_env.HOME }}/.config/picom.conf"
+    mode: "0644"
+
+- name: Force the GTK xdg-desktop-portal backend
+  ansible.builtin.copy:
+    src: portals.conf
+    dest: "{{ ansible_env.HOME }}/.config/xdg-desktop-portal/portals.conf"
+    mode: "0644"
+
+- name: Inherit the Adwaita cursor theme
+  ansible.builtin.copy:
+    src: icons-default-index.theme
+    dest: "{{ ansible_env.HOME }}/.icons/default/index.theme"
+    mode: "0644"
+
+- name: Configure touchpad tap-to-click and natural scrolling
+  ansible.builtin.copy:
+    src: 40-libinput-touchpad.conf
+    dest: /etc/X11/xorg.conf.d/40-libinput-touchpad.conf
+    mode: "0644"
+  become: true
+
+- name: Ensure the font directory exists
+  ansible.builtin.file:
+    path: "{{ desktop_font_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Install the CaskaydiaCove Nerd Font
+  ansible.builtin.unarchive:
+    src: "{{ desktop_font_url }}"
+    dest: "{{ desktop_font_dir }}"
+    remote_src: true
+    creates: "{{ desktop_font_dir }}/CaskaydiaCoveNerdFont-Regular.ttf"
+  notify: Rebuild font cache

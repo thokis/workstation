@@ -1,0 +1,43 @@
+#!/bin/sh
+# X11 idle manager for dwm:
+#   - dim the backlight after DIM_SEC of inactivity, restore on activity
+#   - suspend after SUSPEND_SEC of inactivity, but ONLY on battery
+# Launched from ~/.xinitrc (runs inside the X + logind session).
+
+DIM_SEC=600         # 10 min -> dim
+SUSPEND_SEC=3600    # 60 min -> suspend (battery only)
+DIM_PCT=10          # brightness % while dimmed
+DEV=amdgpu_bl1
+
+on_battery() { [ "$(cat /sys/class/power_supply/ACAD/online 2>/dev/null)" = 0 ]; }
+
+dimmed=0
+saved=""
+
+while :; do
+	idle=$(( $(xprintidle 2>/dev/null || echo 0) / 1000 ))
+
+	# suspend (battery only) — restore brightness first so resume looks normal
+	if [ "$idle" -ge "$SUSPEND_SEC" ] && on_battery; then
+		if [ "$dimmed" = 1 ]; then
+			brightnessctl -q -d "$DEV" set "$saved" 2>/dev/null
+			dimmed=0
+		fi
+		systemctl suspend
+		sleep 10          # let resume settle before re-reading idle
+		continue
+	fi
+
+	# dim / undim
+	if [ "$idle" -ge "$DIM_SEC" ] && [ "$dimmed" = 0 ]; then
+		saved=$(brightnessctl -d "$DEV" get 2>/dev/null)
+		brightnessctl -q -d "$DEV" set "${DIM_PCT}%" 2>/dev/null
+		dimmed=1
+	elif [ "$idle" -lt "$DIM_SEC" ] && [ "$dimmed" = 1 ]; then
+		brightnessctl -q -d "$DEV" set "$saved" 2>/dev/null
+		dimmed=0
+	fi
+
+	# poll faster while dimmed so brightness restores quickly on activity
+	if [ "$dimmed" = 1 ]; then sleep 2; else sleep 15; fi
+done
