@@ -1,11 +1,10 @@
 ---
-xsecurelock_repo: https://github.com/thokis/xsecurelock.git
+xsecurelock_repo: https://github.com/google/xsecurelock.git
 xsecurelock_version: master
 xsecurelock_src: "{{ ansible_env.HOME }}/.sources/xsecurelock"
 xsecurelock_bin: /usr/local/bin/xsecurelock
 xsecurelock_pam_service: common-auth
 
-# libimlib2-dev enables the personal blurred-background patch (HAVE_IMLIB2).
 xsecurelock_build_packages:
   - build-essential
   - autoconf
@@ -20,4 +19,3 @@ xsecurelock_build_packages:
   - libxmu-dev
   - libxrandr-dev
   - libxss-dev
-  - libimlib2-dev

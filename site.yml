@@ -27,10 +27,8 @@
       tags: [dmenu, wm]
     - role: slstatus # status bar (personal fork)
       tags: [slstatus, wm]
-    - role: xsecurelock # screen locker (personal fork)
+    - role: xsecurelock # screen locker (upstream; plain black + prompt)
       tags: [xsecurelock, wm]
-    - role: xsecurelock_blur # blurred lock-screen saver (own repo in ~/.sources)
-      tags: [xsecurelock_blur, wm]
     - role: shell # bash env: oh-my-bash + managed .bashrc/.profile
       tags: [shell]
     - role: desktop # X session glue: .xinitrc, dotfiles, scripts, fonts

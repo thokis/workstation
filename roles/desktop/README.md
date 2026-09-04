@@ -16,8 +16,8 @@ Deploys:
   `google-chrome` (scales Chrome to 0.9), `screenshot`.
 - CaskaydiaCove Nerd Font (`desktop_font_version`).
 
-The blurred lock-screen saver `lockscreen` invokes is built by the separate
-`saver_blur` role (from its own repo), not here.
+`lockscreen` runs upstream xsecurelock (built by the `xsecurelock` role): plain
+black background + password prompt, no blurred backdrop.
 
 Note: several scripts are tuned to a Framework 13 AMD (`k10temp`, `amdgpu_bl1`,
 `ACAD`, `wlp1s0`, `BAT1`) — adjust for other hardware.

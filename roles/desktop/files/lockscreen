@@ -1,7 +1,5 @@
 #!/bin/sh
-# Lock the screen with xsecurelock, showing a blurred snapshot of the current
-# screen as the background. Capture happens here, BEFORE xsecurelock covers the
-# screen; xsecurelock-blur then renders the result inside the lock window.
+# Lock the screen with xsecurelock: plain black background + password prompt.
 # Used both by the dwm keybind and by xss-lock (suspend / lock-session).
 set -eu
 
@@ -17,17 +15,4 @@ export XSECURELOCK_AUTH_TIMEOUT=30
 export XSECURELOCK_BLANK_TIMEOUT=10          # blank after 10s locked
 export XSECURELOCK_BLANK_DPMS_STATE=off      # power the panel off when blanked
 
-shot=/tmp/xsecurelock-shot.png
-bg=/tmp/xsecurelock-bg.png
-
-# Snapshot + blur. Downscale -> blur -> upscale is fast and looks smooth;
-# -modulate 70 dims it ~30% so the password prompt stays readable.
-if scrot -o -z "$shot" 2>/dev/null; then
-	convert "$shot" -scale 20% -blur 0x3 -resize 500% -modulate 70 "$bg" 2>/dev/null || rm -f "$bg"
-	rm -f "$shot"
-	[ -f "$bg" ] && chmod 600 "$bg" 2>/dev/null || true
-fi
-
-export XSECURELOCK_SAVER="$HOME/.local/bin/xsecurelock-blur"
-export XSECURELOCK_BG_IMAGE="$bg"
 exec xsecurelock
