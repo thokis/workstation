@@ -1,4 +1,15 @@
 ---
+# Base packages every machine needs before the other roles clone and build.
+# (SSH keys for the git@github.com fork clones are a separate manual prerequisite
+# — pulled from Bitwarden onto the box, never committed.)
+system_base_packages:
+    - git
+    - curl
+    - ca-certificates
+    - build-essential
+    - pkg-config
+    - unzip
+
 # Display manager to stop (the dwm session starts via startx from a tty login).
 system_display_manager: gdm.service
 

@@ -3,14 +3,14 @@
   hosts: localhost
   gather_facts: true
   roles:
+      - role: system # bootstrap first: base packages (git, …), console boot. Run from a tty/SSH, not the GUI.
+        tags: [system, wm, bootstrap]
       # - role: terminal   # ghostty for everything (editor's text-file open depends on this)
       #   tags: terminal
       - role: nodejs # Node.js via nvm (Neovim/Mason tooling; editor depends on it)
         tags: [nodejs, editor]
       - role: editor # neovim from source + personal config
         tags: editor
-      - role: system # plain text console, no display manager (startx + dwm)
-        tags: [system, wm]
       - role: dwm # tiling window manager (personal fork)
         tags: [dwm, wm]
       - role: st # terminal (personal fork)

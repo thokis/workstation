@@ -1,4 +1,11 @@
 ---
+- name: Install base packages
+  ansible.builtin.apt:
+      name: "{{ system_base_packages }}"
+      state: present
+      update_cache: true
+  become: true
+
 - name: Gather service facts
   ansible.builtin.service_facts:
 
@@ -11,7 +18,7 @@
 
 # What `systemctl set-default {{ system_boot_target }}` does, as an idempotent
 # symlink: boot to a text console so the display manager never starts.
-- name: Boot to the multi-user target (no display manager on future boots)
+- name: Boot to the multi-user target
   ansible.builtin.file:
       src: "/usr/lib/systemd/system/{{ system_boot_target }}"
       dest: /etc/systemd/system/default.target
