@@ -1,22 +1,7 @@
 ---
 - name: Configure personal workstation
   hosts: all
-  gather_facts: false
-  pre_tasks:
-    # Guard: refuse a fleet-wide run. `hosts: all` + no --limit would target every
-    # inventory host; require an explicit --limit (use `--limit all` to force).
-    # tags: always so the guard + fact gather still run under --tags.
-    - name: Require an explicit --limit
-      ansible.builtin.assert:
-        that: ansible_limit is defined
-        fail_msg: "Refusing to run against all hosts. Pass --limit <host> (or --limit all to force)."
-        quiet: true
-      run_once: true
-      delegate_to: localhost
-      tags: always
-    - name: Gather facts
-      ansible.builtin.setup:
-      tags: always
+  gather_facts: true
   roles:
     - role: system # bootstrap first: base packages (git, …), console boot. Run from a tty/SSH, not the GUI.
       tags: [system, wm, bootstrap]
