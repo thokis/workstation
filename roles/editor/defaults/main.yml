@@ -4,7 +4,7 @@ editor_nvim_repo: https://github.com/neovim/neovim.git
 editor_nvim_version: stable
 editor_nvim_src: "{{ ansible_env.HOME }}/.sources/neovim"
 
-editor_config_repo: git@github.com:thokis/kickstart.nvim.git
+editor_config_repo: https://github.com/thokis/kickstart.nvim.git
 editor_config_version: master
 editor_config_dir: "{{ ansible_env.HOME }}/.config/nvim"
 

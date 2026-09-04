@@ -1,5 +1,5 @@
 ---
-st_repo: git@github.com:thokis/st.git
+st_repo: https://github.com/thokis/st.git
 st_version: master
 st_src: "{{ ansible_env.HOME }}/.sources/st"
 st_bin: /usr/local/bin/st

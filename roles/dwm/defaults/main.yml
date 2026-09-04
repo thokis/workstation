@@ -1,5 +1,5 @@
 ---
-dwm_repo: git@github.com:thokis/dwm.git
+dwm_repo: https://github.com/thokis/dwm.git
 dwm_version: master
 dwm_src: "{{ ansible_env.HOME }}/.sources/dwm"
 dwm_bin: /usr/local/bin/dwm

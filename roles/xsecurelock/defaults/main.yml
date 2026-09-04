@@ -1,5 +1,5 @@
 ---
-xsecurelock_repo: git@github.com:thokis/xsecurelock.git
+xsecurelock_repo: https://github.com/thokis/xsecurelock.git
 xsecurelock_version: master
 xsecurelock_src: "{{ ansible_env.HOME }}/.sources/xsecurelock"
 xsecurelock_bin: /usr/local/bin/xsecurelock
