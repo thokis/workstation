@@ -1,62 +1,68 @@
 ---
 - name: Install neovim build and runtime dependencies
   ansible.builtin.apt:
-    name: "{{ editor_packages }}"
+    name: "{{ neovim_packages }}"
     state: present
   become: true
 
 # Note: `stable` is a tag neovim force-moves on each release. A plain fetch
 # gets it on first clone; to pick up a newer stable on an existing checkout,
-# bump editor_nvim_version to the release tag (e.g. v0.11.6) or delete the
+# bump neovim_version to the release tag (e.g. v0.11.6) or delete the
 # local `stable` tag first.
 - name: Clone or update the neovim source (stable)
   ansible.builtin.git:
-    repo: "{{ editor_nvim_repo }}"
-    dest: "{{ editor_nvim_src }}"
-    version: "{{ editor_nvim_version }}"
+    repo: "{{ neovim_repo }}"
+    dest: "{{ neovim_src }}"
+    version: "{{ neovim_version }}"
     force: true   # neovim force-moves the nightly/stable tags; allow clobbering
-  register: editor_nvim_git
+  register: neovim_git
 
 - name: Check whether neovim is installed
   ansible.builtin.stat:
-    path: "{{ editor_nvim_bin }}"
-  register: editor_nvim_binary
+    path: "{{ neovim_bin }}"
+  register: neovim_binary
 
 # Gate on the checked-out commit actually changing (before != after), not on
 # git.changed — force:true reports changed every run because neovim's nightly
 # tag always moves, which would otherwise rebuild neovim needlessly.
 - name: Clean the previous neovim build on version change
   community.general.make:
-    chdir: "{{ editor_nvim_src }}"
+    chdir: "{{ neovim_src }}"
     target: distclean
   when:
-    - editor_nvim_git.before is not none
-    - editor_nvim_git.before != editor_nvim_git.after
-    - editor_nvim_binary.stat.exists
+    - neovim_git.before is not none
+    - neovim_git.before != neovim_git.after
+    - neovim_binary.stat.exists
 
 - name: Build neovim
   community.general.make:
-    chdir: "{{ editor_nvim_src }}"
+    chdir: "{{ neovim_src }}"
     params:
       CMAKE_BUILD_TYPE: RelWithDebInfo
-  when: editor_nvim_git.before != editor_nvim_git.after or not editor_nvim_binary.stat.exists
+  when: neovim_git.before != neovim_git.after or not neovim_binary.stat.exists
 
 - name: Install neovim
   community.general.make:
-    chdir: "{{ editor_nvim_src }}"
+    chdir: "{{ neovim_src }}"
     target: install
   become: true
-  when: editor_nvim_git.before != editor_nvim_git.after or not editor_nvim_binary.stat.exists
+  when: neovim_git.before != neovim_git.after or not neovim_binary.stat.exists
 
 - name: Clone or update the neovim config fork
   ansible.builtin.git:
-    repo: "{{ editor_config_repo }}"
-    dest: "{{ editor_config_dir }}"
-    version: "{{ editor_config_version }}"
+    repo: "{{ neovim_config_repo }}"
+    dest: "{{ neovim_config_dir }}"
+    version: "{{ neovim_config_version }}"
     force: true   # fork is source of truth; discard local drift (e.g. lazy-lock)
 
+- name: Set neovim as the default editor (update-alternatives)
+  community.general.alternatives:
+    name: editor
+    path: "{{ neovim_bin }}"
+  become: true
+
 # nvim.desktop is Terminal=true, so opening a text file is hosted by whatever the
-# terminal role's xdg-terminal-exec keystone resolves (ghostty).
+# st role's xdg-terminal-exec keystone resolves (st).
 - name: Set default text editor in mimeapps.list
   community.general.ini_file:
     path: "{{ ansible_env.HOME }}/.config/mimeapps.list"
@@ -66,4 +72,4 @@
     no_extra_spaces: true
     create: true
     mode: "0644"
-  loop: "{{ editor_default_apps }}"
+  loop: "{{ neovim_default_apps }}"

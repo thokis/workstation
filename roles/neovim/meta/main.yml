@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: editor
+  role_name: neovim
   author: Thomas Kiss
   description: nvim as the default text editor/viewer on Ubuntu GNOME
   license: MIT

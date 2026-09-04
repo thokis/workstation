@@ -9,14 +9,12 @@
       tags: [uv, bootstrap]
     - role: secrets # install the GitHub SSH key from OpenBao before any clone
       tags: [secrets, bootstrap]
-    # - role: terminal   # ghostty for everything (editor's text-file open depends on this)
-    #   tags: terminal
     - role: nodejs # Node.js via nvm (Neovim/Mason tooling; editor depends on it)
-      tags: [nodejs, editor]
+      tags: [nodejs, neovim]
     - role: pyenv # pyenv + pyenv-virtualenv (Python version manager)
       tags: [pyenv]
-    - role: editor # neovim from source + personal config
-      tags: editor
+    - role: neovim # neovim from source + config; default editor
+      tags: neovim
     - role: xorg # X server + xinit (modesetting; AMD/Intel auto)
       tags: [xorg, wm]
     - role: dwm # tiling window manager (upstream + vendored patch)

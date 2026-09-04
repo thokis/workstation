@@ -1,4 +1,4 @@
-# editor
+# neovim
 
 Builds Neovim from source and deploys the personal config.
 
