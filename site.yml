@@ -25,7 +25,7 @@
       tags: [st, wm]
     - role: dmenu # launcher (personal fork)
       tags: [dmenu, wm]
-    - role: slstatus # status bar (personal fork)
+    - role: slstatus # status bar (upstream; templated config.h)
       tags: [slstatus, wm]
     - role: xsecurelock # screen locker (upstream; plain black + prompt)
       tags: [xsecurelock, wm]
