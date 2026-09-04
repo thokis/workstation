@@ -7,5 +7,15 @@
       tags: terminal
     - role: editor     # nvim as text editor/viewer
       tags: editor
+    - role: dwm        # tiling window manager (personal fork)
+      tags: [dwm, wm]
+    - role: st         # terminal (personal fork)
+      tags: [st, wm]
+    - role: dmenu      # launcher (personal fork)
+      tags: [dmenu, wm]
+    - role: slstatus   # status bar (personal fork)
+      tags: [slstatus, wm]
+    - role: xsecurelock  # screen locker (personal fork)
+      tags: [xsecurelock, wm]
     # - role: <next>
     #   tags: <next>

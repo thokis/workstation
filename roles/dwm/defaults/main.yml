@@ -1,0 +1,11 @@
+---
+dwm_repo: git@github.com:thokis/dwm.git
+dwm_version: master
+dwm_src: "{{ ansible_env.HOME }}/.sources/dwm"
+dwm_bin: /usr/local/bin/dwm
+
+dwm_build_packages:
+  - build-essential
+  - libx11-dev
+  - libxft-dev
+  - libxinerama-dev

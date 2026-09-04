@@ -1,0 +1,31 @@
+---
+- name: Install build dependencies
+  ansible.builtin.apt:
+    name: "{{ dwm_build_packages }}"
+    state: present
+  become: true
+
+- name: Clone or update the dwm fork
+  ansible.builtin.git:
+    repo: "{{ dwm_repo }}"
+    dest: "{{ dwm_src }}"
+    version: "{{ dwm_version }}"
+  register: dwm_git
+
+- name: Check whether dwm is installed
+  ansible.builtin.stat:
+    path: "{{ dwm_bin }}"
+  register: dwm_binary
+
+- name: Build dwm
+  community.general.make:
+    chdir: "{{ dwm_src }}"
+    target: all
+  when: dwm_git.changed or not dwm_binary.stat.exists
+
+- name: Install dwm
+  community.general.make:
+    chdir: "{{ dwm_src }}"
+    target: install
+  become: true
+  when: dwm_git.changed or not dwm_binary.stat.exists

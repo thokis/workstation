@@ -1,0 +1,31 @@
+---
+- name: Install build dependencies
+  ansible.builtin.apt:
+    name: "{{ dmenu_build_packages }}"
+    state: present
+  become: true
+
+- name: Clone or update the dmenu fork
+  ansible.builtin.git:
+    repo: "{{ dmenu_repo }}"
+    dest: "{{ dmenu_src }}"
+    version: "{{ dmenu_version }}"
+  register: dmenu_git
+
+- name: Check whether dmenu is installed
+  ansible.builtin.stat:
+    path: "{{ dmenu_bin }}"
+  register: dmenu_binary
+
+- name: Build dmenu
+  community.general.make:
+    chdir: "{{ dmenu_src }}"
+    target: all
+  when: dmenu_git.changed or not dmenu_binary.stat.exists
+
+- name: Install dmenu
+  community.general.make:
+    chdir: "{{ dmenu_src }}"
+    target: install
+  become: true
+  when: dmenu_git.changed or not dmenu_binary.stat.exists

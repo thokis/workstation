@@ -1,0 +1,10 @@
+---
+st_repo: git@github.com:thokis/st.git
+st_version: master
+st_src: "{{ ansible_env.HOME }}/.sources/st"
+st_bin: /usr/local/bin/st
+
+st_build_packages:
+  - build-essential
+  - libx11-dev
+  - libxft-dev

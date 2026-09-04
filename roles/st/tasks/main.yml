@@ -1,0 +1,31 @@
+---
+- name: Install build dependencies
+  ansible.builtin.apt:
+    name: "{{ st_build_packages }}"
+    state: present
+  become: true
+
+- name: Clone or update the st fork
+  ansible.builtin.git:
+    repo: "{{ st_repo }}"
+    dest: "{{ st_src }}"
+    version: "{{ st_version }}"
+  register: st_git
+
+- name: Check whether st is installed
+  ansible.builtin.stat:
+    path: "{{ st_bin }}"
+  register: st_binary
+
+- name: Build st
+  community.general.make:
+    chdir: "{{ st_src }}"
+    target: all
+  when: st_git.changed or not st_binary.stat.exists
+
+- name: Install st
+  community.general.make:
+    chdir: "{{ st_src }}"
+    target: install
+  become: true
+  when: st_git.changed or not st_binary.stat.exists

@@ -1,0 +1,31 @@
+---
+- name: Install build dependencies
+  ansible.builtin.apt:
+    name: "{{ slstatus_build_packages }}"
+    state: present
+  become: true
+
+- name: Clone or update the slstatus fork
+  ansible.builtin.git:
+    repo: "{{ slstatus_repo }}"
+    dest: "{{ slstatus_src }}"
+    version: "{{ slstatus_version }}"
+  register: slstatus_git
+
+- name: Check whether slstatus is installed
+  ansible.builtin.stat:
+    path: "{{ slstatus_bin }}"
+  register: slstatus_binary
+
+- name: Build slstatus
+  community.general.make:
+    chdir: "{{ slstatus_src }}"
+    target: all
+  when: slstatus_git.changed or not slstatus_binary.stat.exists
+
+- name: Install slstatus
+  community.general.make:
+    chdir: "{{ slstatus_src }}"
+    target: install
+  become: true
+  when: slstatus_git.changed or not slstatus_binary.stat.exists
