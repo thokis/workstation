@@ -20,7 +20,8 @@ desktop_packages:
     - libpam-gnome-keyring # unlock keyring (ssh keys, NM/wifi secrets) at tty login
     - xss-lock # lock on suspend / lock-session
     - xprintidle # idle-manager
-    - brightnessctl # idle-manager backlight
+    - brightnessctl # idle-manager backlight + dwm brightness keys
+    - pamixer # dwm volume keys (XF86Audio*)
     - iw # netstatus wifi essid
     - x11-xserver-utils # xrdb, xsetroot
 
