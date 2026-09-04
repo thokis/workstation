@@ -1,6 +1,6 @@
 ---
 - name: Configure personal workstation
-  hosts: localhost
+  hosts: "{{ target_hosts | default('localhost') }}"
   gather_facts: true
   roles:
       - role: system # bootstrap first: base packages (git, …), console boot. Run from a tty/SSH, not the GUI.
