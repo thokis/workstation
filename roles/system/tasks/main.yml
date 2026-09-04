@@ -25,6 +25,13 @@
       state: link
   become: true
 
+- name: Set the console keyboard layout
+  ansible.builtin.lineinfile:
+      path: /etc/default/keyboard
+      regexp: '^XKBLAYOUT='
+      line: 'XKBLAYOUT="{{ keyboard_layout }}"'
+  become: true
+
 - name: Enable verbose console boot
   ansible.builtin.replace:
       path: /etc/default/grub

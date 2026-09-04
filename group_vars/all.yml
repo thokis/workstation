@@ -1,0 +1,5 @@
+---
+# Keyboard layout for both the tty console (login) and the X/dwm session.
+# Fleet default is US qwerty (desktops); German-qwertz notebooks override to
+# "de" via host_vars/<host>.yml or -e keyboard_layout=de.
+keyboard_layout: us
