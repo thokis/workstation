@@ -1,2 +1,4 @@
 *.retry
 .cache/
+# OpenBao AppRole creds for provisioning — generated, never committed.
+.env
