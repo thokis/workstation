@@ -1,0 +1,35 @@
+---
+- name: Clone oh-my-bash
+  ansible.builtin.git:
+    repo: "{{ shell_omb_repo }}"
+    dest: "{{ shell_omb_dir }}"
+    version: master
+    recursive: false
+    update: false   # don't clobber the framework on every run; just ensure present
+
+- name: Deploy the custom oh-my-bash overlay
+  ansible.builtin.copy:
+    src: omb-custom/
+    dest: "{{ shell_omb_dir }}/custom/"
+    mode: preserve
+
+- name: Deploy .profile
+  ansible.builtin.copy:
+    src: profile
+    dest: "{{ ansible_env.HOME }}/.profile"
+    mode: "0644"
+
+- name: Deploy .bashrc
+  ansible.builtin.copy:
+    src: bashrc
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    mode: "0644"
+
+# Machine-local overrides + secrets live here, sourced by .bashrc. Never managed
+# or committed — create it empty once, never overwrite an existing one.
+- name: Ensure ~/.bashrc.local exists
+  ansible.builtin.copy:
+    content: "# Machine-local shell config and secrets. Gitignored, not managed.\n"
+    dest: "{{ ansible_env.HOME }}/.bashrc.local"
+    mode: "0600"
+    force: false

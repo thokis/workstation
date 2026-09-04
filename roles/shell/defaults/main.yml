@@ -1,0 +1,3 @@
+---
+shell_omb_repo: https://github.com/ohmybash/oh-my-bash.git
+shell_omb_dir: "{{ ansible_env.HOME }}/.oh-my-bash"

@@ -1,0 +1,52 @@
+# Managed by the `shell` Ansible role. Machine-local settings and SECRETS go in
+# ~/.bashrc.local (gitignored, sourced at the end) — never here.
+
+# Enable the subsequent settings only in interactive sessions
+case $- in
+  *i*) ;;
+    *) return;;
+esac
+
+# oh-my-bash
+export OSH="$HOME/.oh-my-bash"
+OSH_THEME="robbyrussell"
+OMB_USE_SUDO=true
+OMB_PROMPT_SHOW_PYTHON_VENV=true
+
+completions=(
+  git
+  composer
+  ssh
+)
+
+aliases=(
+  general
+  cat
+)
+
+plugins=(
+  git
+  bashmarks
+  nnn
+  pyenv
+)
+
+source "$OSH"/oh-my-bash.sh
+
+# User configuration
+export EDITOR='nvim'
+
+# Toolchains (sourced only if present)
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"   # uv
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"           # rust/cargo
+
+# nvm (installed by the nodejs role)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# PATH extras
+[ -d "$HOME/.dotnet" ] && export PATH="$PATH:$HOME/.dotnet"
+
+# Machine-local overrides and secrets (gitignored, not managed by Ansible).
+[ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
