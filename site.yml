@@ -19,11 +19,11 @@
       tags: editor
     - role: xorg # X server + xinit (modesetting; AMD/Intel auto)
       tags: [xorg, wm]
-    - role: dwm # tiling window manager (personal fork)
+    - role: dwm # tiling window manager (upstream + vendored patch)
       tags: [dwm, wm]
-    - role: st # terminal (personal fork)
+    - role: st # terminal (upstream + vendored patch)
       tags: [st, wm]
-    - role: dmenu # launcher (personal fork)
+    - role: dmenu # launcher (upstream, stock)
       tags: [dmenu, wm]
     - role: slstatus # status bar (upstream; templated config.h)
       tags: [slstatus, wm]

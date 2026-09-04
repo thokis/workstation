@@ -5,12 +5,30 @@
     state: present
   become: true
 
-- name: Clone or update the st fork
+- name: Check for an existing st checkout
+  ansible.builtin.stat:
+    path: "{{ st_src }}/.git"
+  register: st_src_git
+
+- name: Clone upstream st (pinned)
   ansible.builtin.git:
     repo: "{{ st_repo }}"
     dest: "{{ st_src }}"
     version: "{{ st_version }}"
-  register: st_git
+  when: not st_src_git.stat.exists
+
+- name: Apply the scrollback + alpha patch
+  ansible.posix.patch:
+    src: "{{ st_patch }}"
+    basedir: "{{ st_src }}"
+    strip: 1
+
+- name: Deploy config.h
+  ansible.builtin.copy:
+    src: config.h
+    dest: "{{ st_src }}/config.h"
+    mode: "0644"
+  register: st_config
 
 - name: Check whether st is installed
   ansible.builtin.stat:
@@ -21,11 +39,11 @@
   community.general.make:
     chdir: "{{ st_src }}"
     target: all
-  when: st_git.changed or not st_binary.stat.exists
+  when: st_config.changed or not st_binary.stat.exists
 
 - name: Install st
   community.general.make:
     chdir: "{{ st_src }}"
     target: install
   become: true
-  when: st_git.changed or not st_binary.stat.exists
+  when: st_config.changed or not st_binary.stat.exists

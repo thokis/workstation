@@ -1,11 +1,11 @@
 ---
-dmenu_repo: https://github.com/thokis/dmenu.git
+dmenu_repo: https://git.suckless.org/dmenu
 dmenu_version: master
 dmenu_src: "{{ ansible_env.HOME }}/.sources/dmenu"
 dmenu_bin: /usr/local/bin/dmenu
 
 dmenu_build_packages:
-    - build-essential
-    - libx11-dev
-    - libxft-dev
-    - libxinerama-dev
+  - build-essential
+  - libx11-dev
+  - libxft-dev
+  - libxinerama-dev

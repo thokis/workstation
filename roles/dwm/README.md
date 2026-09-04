@@ -1,11 +1,10 @@
 # dwm
 
-Builds and installs the personal [dwm](https://github.com/thokis/dwm) fork
-(pertag patch, grid layout, personal `config.h`) to `/usr/local/bin`.
+Builds dwm from **pinned upstream** (`dwm_version`), applies the vendored
+`files/pertag-grid.patch` (per-tag layout/mfact/nmaster/bar state + a grid
+layout), deploys `files/config.h`, then builds/installs to `/usr/local`. No
+fork — the patch + config live here.
 
-Rebuilds only when the checkout changes or the binary is missing. Local
-uncommitted edits to `config.h` are left untouched — rebuild those by hand
-(`make && sudo make install`), the role only bootstraps a clean machine.
-
-Vars: `dwm_repo`, `dwm_version` (default `master`), `dwm_src`, `dwm_bin`,
-`dwm_build_packages`.
+To change the config: edit `files/config.h`. To evolve the C patch: apply it to
+a checkout, edit, regenerate the diff, and bump `dwm_version` if you rebased onto
+newer upstream.

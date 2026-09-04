@@ -1,9 +1,6 @@
 # st
 
-Builds and installs the personal [st](https://github.com/thokis/st) fork
-(scrollback + alpha patches, Nerd Font, OSC 52 clipboard) to `/usr/local/bin`.
-
-Rebuilds only when the checkout changes or the binary is missing.
-
-Vars: `st_repo`, `st_version` (default `master`), `st_src`, `st_bin`,
-`st_build_packages`.
+Builds st from **pinned upstream** (`st_version`), applies the vendored
+`files/scrollback-alpha.patch` (scrollback ring buffer + background alpha),
+deploys `files/config.h` (Nerd Font, OSC 52, opaque), then builds/installs to
+`/usr/local`. No fork — the patch + config live here.

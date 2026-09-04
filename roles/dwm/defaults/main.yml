@@ -1,8 +1,10 @@
 ---
-dwm_repo: https://github.com/thokis/dwm.git
-dwm_version: master
+dwm_repo: https://git.suckless.org/dwm
+# Pinned upstream commit the vendored patch was generated against.
+dwm_version: 44dbc6809d05b8f2addc483f882e670db0b6b8e9
 dwm_src: "{{ ansible_env.HOME }}/.sources/dwm"
 dwm_bin: /usr/local/bin/dwm
+dwm_patch: pertag-grid.patch
 
 dwm_build_packages:
   - build-essential
