@@ -7,10 +7,10 @@ the later roles can clone the `git@github.com` forks. Runs early (right after
 
 Auth is **AppRole**, read from the environment (`ANSIBLE_HASHI_VAULT_ADDR`,
 `ANSIBLE_HASHI_VAULT_AUTH_METHOD=approle`, `ANSIBLE_HASHI_VAULT_ROLE_ID`,
-`ANSIBLE_HASHI_VAULT_SECRET_ID`) — generated into a gitignored `.env` by
-`scripts/bootstrap-secrets-env.sh` and sourced by `scripts/provision.sh`. The
-lookup runs on the **controller**; the key is written onto the target. Every
-secret-touching task is `no_log: true`.
+`ANSIBLE_HASHI_VAULT_SECRET_ID`). Run via **`scripts/provision.sh`**, which mints
+a fresh secret_id over SSH to helios9, exports these in-process (never written to
+disk), and runs the playbook. The lookup runs on the **controller**; the key is
+written onto the target. Every secret-touching task is `no_log: true`.
 
 Controller prerequisites: `community.hashi_vault` collection (in
 `requirements.yml`) and the `hvac` Python library (`uv pip install hvac` in the
