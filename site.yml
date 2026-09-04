@@ -1,33 +1,48 @@
 ---
 - name: Configure personal workstation
-  hosts: "{{ target_hosts | default('localhost') }}"
-  gather_facts: true
+  hosts: all
+  gather_facts: false
+  pre_tasks:
+    # Guard: refuse a fleet-wide run. `hosts: all` + no --limit would target every
+    # inventory host; require an explicit --limit (use `--limit all` to force).
+    # tags: always so the guard + fact gather still run under --tags.
+    - name: Require an explicit --limit
+      ansible.builtin.assert:
+        that: ansible_limit is defined
+        fail_msg: "Refusing to run against all hosts. Pass --limit <host> (or --limit all to force)."
+        quiet: true
+      run_once: true
+      delegate_to: localhost
+      tags: always
+    - name: Gather facts
+      ansible.builtin.setup:
+      tags: always
   roles:
-      - role: system # bootstrap first: base packages (git, …), console boot. Run from a tty/SSH, not the GUI.
-        tags: [system, wm, bootstrap]
-      - role: uv # uv Python tool manager
-        tags: [uv, bootstrap]
-      - role: secrets # install the GitHub SSH key from OpenBao before any clone
-        tags: [secrets, bootstrap]
-      # - role: terminal   # ghostty for everything (editor's text-file open depends on this)
-      #   tags: terminal
-      - role: nodejs # Node.js via nvm (Neovim/Mason tooling; editor depends on it)
-        tags: [nodejs, editor]
-      - role: editor # neovim from source + personal config
-        tags: editor
-      - role: dwm # tiling window manager (personal fork)
-        tags: [dwm, wm]
-      - role: st # terminal (personal fork)
-        tags: [st, wm]
-      - role: dmenu # launcher (personal fork)
-        tags: [dmenu, wm]
-      - role: slstatus # status bar (personal fork)
-        tags: [slstatus, wm]
-      - role: xsecurelock # screen locker (personal fork)
-        tags: [xsecurelock, wm]
-      - role: xsecurelock_blur # blurred lock-screen saver (own repo in ~/.sources)
-        tags: [xsecurelock_blur, wm]
-      - role: desktop # X session glue: .xinitrc, dotfiles, scripts, fonts
-        tags: [desktop, wm]
-      # - role: <next>
-      #   tags: <next>
+    - role: system # bootstrap first: base packages (git, …), console boot. Run from a tty/SSH, not the GUI.
+      tags: [system, wm, bootstrap]
+    - role: uv # uv Python tool manager
+      tags: [uv, bootstrap]
+    - role: secrets # install the GitHub SSH key from OpenBao before any clone
+      tags: [secrets, bootstrap]
+    # - role: terminal   # ghostty for everything (editor's text-file open depends on this)
+    #   tags: terminal
+    - role: nodejs # Node.js via nvm (Neovim/Mason tooling; editor depends on it)
+      tags: [nodejs, editor]
+    - role: editor # neovim from source + personal config
+      tags: editor
+    - role: dwm # tiling window manager (personal fork)
+      tags: [dwm, wm]
+    - role: st # terminal (personal fork)
+      tags: [st, wm]
+    - role: dmenu # launcher (personal fork)
+      tags: [dmenu, wm]
+    - role: slstatus # status bar (personal fork)
+      tags: [slstatus, wm]
+    - role: xsecurelock # screen locker (personal fork)
+      tags: [xsecurelock, wm]
+    - role: xsecurelock_blur # blurred lock-screen saver (own repo in ~/.sources)
+      tags: [xsecurelock_blur, wm]
+    - role: desktop # X session glue: .xinitrc, dotfiles, scripts, fonts
+      tags: [desktop, wm]
+    # - role: <next>
+    #   tags: <next>
