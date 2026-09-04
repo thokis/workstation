@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  role_name: saver_blur
+  role_name: xsecurelock_blur
   author: Thomas Kiss
-  description: Build and install xsecurelock-saver-blur (the blurred lock-screen saver)
+  description: Build and install xsecurelock-blur (the blurred lock-screen saver)
   license: MIT
   min_ansible_version: "2.15"
   platforms:

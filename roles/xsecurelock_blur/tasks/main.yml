@@ -1,0 +1,29 @@
+---
+- name: Install build dependencies
+  ansible.builtin.apt:
+    name: "{{ xsecurelock_blur_build_packages }}"
+    state: present
+  become: true
+
+- name: Clone or update the xsecurelock-blur repo
+  ansible.builtin.git:
+    repo: "{{ xsecurelock_blur_repo }}"
+    dest: "{{ xsecurelock_blur_src }}"
+    version: "{{ xsecurelock_blur_version }}"
+  register: xsecurelock_blur_git
+
+- name: Check whether the blur saver is installed
+  ansible.builtin.stat:
+    path: "{{ xsecurelock_blur_bin }}"
+  register: xsecurelock_blur_binary
+
+- name: Build xsecurelock-blur
+  community.general.make:
+    chdir: "{{ xsecurelock_blur_src }}"
+  when: xsecurelock_blur_git.changed or not xsecurelock_blur_binary.stat.exists
+
+- name: Install xsecurelock-blur
+  community.general.make:
+    chdir: "{{ xsecurelock_blur_src }}"
+    target: install
+  when: xsecurelock_blur_git.changed or not xsecurelock_blur_binary.stat.exists
